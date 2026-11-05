@@ -1,0 +1,69 @@
+name: Build and Publish React App to Amazon ECR
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+
+env:
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY: aws-eks-2048-app
+  DEPLOYMENT_FILE: infrastructure/k8s-manifest/deployment.yaml
+
+jobs:
+  build-and-publish:
+    name: Build and Publish Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -t "$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
+            ./app
+
+          docker push "$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+          echo "IMAGE_URI=$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> "$GITHUB_ENV"
+
+      - name: Update Kubernetes deployment manifest
+        run: |
+          sed -i -E \
+            "s|(^[[:space:]]*image:).*|\\1 $IMAGE_URI|" \
+            "$DEPLOYMENT_FILE"
+
+      - name: Commit updated image reference
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add "$DEPLOYMENT_FILE"
+
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update application image [skip ci]"
+            git push
+          fi

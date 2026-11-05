@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eks-2048-app-container
+  namespace: dev
+  labels:
+    app: eks-2048-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eks-2048-app
+  template:
+    metadata:
+      labels:
+        app: eks-2048-app
+    spec:
+      containers:
+        - name: react-app-container
+          image: REPLACE_WITH_ECR_IMAGE
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
