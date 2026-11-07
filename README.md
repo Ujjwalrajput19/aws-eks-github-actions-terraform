@@ -10,7 +10,7 @@ A cloud-native DevOps portfolio project focused on automating application deploy
 
 The goal of this project is to build an automated deployment pipeline for a containerized React 2048 application running on Amazon Elastic Kubernetes Service (EKS).
 
-The intended implementation combines Infrastructure as Code, containerization, continuous integration and GitOps-based continuous delivery.
+The implementation combines Infrastructure as Code, containerization, continuous integration and GitOps-based continuous delivery. The author confirms that the project was deployed and tested in AWS.
 
 ### Project Objectives
 
@@ -25,7 +25,7 @@ The intended implementation combines Infrastructure as Code, containerization, c
 
 ## Technology Stack
 
-The following versions and constraints are configured in the project files. They have not yet been validated through a deployment.
+The following versions and constraints are configured in the project files. The author confirms deployment and testing of the project; consult the repository configuration when reproducing the environment.
 
 | Technology | Configured Version / Usage |
 |---|---|
@@ -73,7 +73,7 @@ The project is configured for the Mumbai AWS region.
 
 ## Architecture Overview
 
-The planned infrastructure and application architecture includes:
+The deployed infrastructure and application architecture includes:
 
 - **Amazon VPC:** Provides an isolated network environment.
 - **Public and Private Subnets:** Separate internet-facing and internal resources.
@@ -88,7 +88,7 @@ The planned infrastructure and application architecture includes:
 
 ## CI/CD and GitOps Workflow
 
-The intended application delivery workflow is:
+The application delivery workflow is:
 
 1. A developer pushes application changes to the GitHub repository.
 2. GitHub Actions detects the changes.
