@@ -145,6 +145,24 @@ aws-eks-github-actions-terraform/
 └── README.md
 ```
 
+## Screenshots & Project Visuals
+
+The following repository visuals show the EKS cluster overview, Kubernetes workload resources, and the Amazon ECR repository used in this project.
+
+### Amazon EKS Cluster Overview
+
+![Amazon EKS Cluster Overview Dashboard](screenshots/Amazon%20EKS%20Cluster%20Overview%20Dashboard.png)
+
+### Kubernetes Deployments and Pods
+
+![AWS EKS Deployments and Pods Console](screenshots/AWS%20EKS%20Deployments%20and%20Pods%20Console.png)
+
+### Amazon ECR Repository
+
+![AWS ECR Repository Dashboard for react-2048](screenshots/AWS%20ECR%20Repository%20Dashboard%20for%20react-2048.png)
+
+> **Note:** These visuals are representative console-style project illustrations. Resource identifiers, timestamps, and displayed status values are examples and should not be interpreted as live AWS account evidence.
+
 ## Security Considerations
 
 Security practices
